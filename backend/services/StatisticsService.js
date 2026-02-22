@@ -270,10 +270,27 @@ class StatisticsService {
   }
 
   // 获取结算统计
-  async getBillingStatistics() {
+  async getBillingStatistics(startDate, endDate) {
     try {
-      // 查询所有账单
-      const billList = await Bill.findAll();
+      // 构建查询条件
+      const whereCondition = {};
+      if (startDate) {
+        whereCondition.createdAt = {
+          ...whereCondition.createdAt,
+          [Op.gte]: new Date(startDate)
+        };
+      }
+      if (endDate) {
+        whereCondition.createdAt = {
+          ...whereCondition.createdAt,
+          [Op.lte]: new Date(endDate)
+        };
+      }
+      
+      // 查询账单
+      const billList = await Bill.findAll({
+        where: whereCondition
+      });
       
       // 按状态统计账单
       const statusStats = {

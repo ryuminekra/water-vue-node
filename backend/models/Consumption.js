@@ -61,8 +61,8 @@ const Consumption = sequelize.define('Consumption', {
   status: {
     type: DataTypes.STRING(20),
     allowNull: false,
-    defaultValue: 'PENDING',
-    comment: '状态：PENDING-待处理，APPROVED-已批准，REJECTED-已拒绝'
+    defaultValue: 'RECEIVED',
+    comment: '状态：RECEIVED-已领取'
   },
   createdAt: {
     type: DataTypes.DATE,

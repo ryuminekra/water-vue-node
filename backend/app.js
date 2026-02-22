@@ -65,8 +65,8 @@ const startServer = async () => {
     
     // 启动服务器
     const PORT = process.env.PORT || 8080;
-    app.listen(PORT, () => {
-      console.log(`服务器运行在 http://localhost:${PORT}`);
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`服务器运行在 http://0.0.0.0:${PORT}`);
     });
   } catch (error) {
     console.error('启动服务器失败:', error);

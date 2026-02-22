@@ -44,8 +44,12 @@ class UserService {
           id: user.id,
           username: user.username,
           name: user.name,
+          email: user.email,
+          phone: user.phone,
+          avatar: user.avatar,
+          departmentId: user.departmentId,
           role: user.role,
-          departmentId: user.departmentId
+          status: user.status
         }
       };
     } catch (error) {

@@ -89,7 +89,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import Api from '../utils/api'
 import { ElMessage } from 'element-plus'
 
 const userInfo = ref({
@@ -117,11 +117,21 @@ const defaultAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726
 // 加载用户信息
 const loadUserInfo = async () => {
   try {
-    // 这里应该从后端获取当前登录用户的信息
-    // 为了演示，我们使用一个模拟的用户信息
-    // 实际项目中应该根据登录状态获取用户ID，然后调用API获取用户信息
-    const response = await axios.get('/api/system/user/1') // 假设当前用户ID为1
-    userInfo.value = response.data.data
+    // 从本地存储获取当前用户信息
+    const currentUser = Api.getCurrentUser()
+    if (currentUser) {
+      // 如果缺少status字段，默认设置为1（启用）
+      if (currentUser.status === undefined) {
+        currentUser.status = 1
+        // 更新本地存储
+        localStorage.setItem('user', JSON.stringify(currentUser))
+      }
+      userInfo.value = currentUser
+    } else {
+      // 如果本地没有用户信息，从后端获取
+      const user = await Api.get('/system/user/1') // 假设当前用户ID为1
+      userInfo.value = user
+    }
   } catch (error) {
     console.error('获取用户信息失败:', error)
     ElMessage.error('获取用户信息失败')
@@ -131,8 +141,8 @@ const loadUserInfo = async () => {
 // 加载部门列表
 const loadDepartments = async () => {
   try {
-    const response = await axios.get('/api/system/department')
-    departments.value = response.data.data
+    const deptList = await Api.get('/system/department')
+    departments.value = deptList
   } catch (error) {
     console.error('获取部门列表失败:', error)
     ElMessage.error('获取部门列表失败')
@@ -169,8 +179,10 @@ const uploadAvatar = async (event) => {
 // 更新个人资料
 const updateProfile = async () => {
   try {
-    await axios.put(`/api/system/user/${userInfo.value.id}`, userInfo.value)
+    await Api.put(`/system/user/${userInfo.value.id}`, userInfo.value)
     ElMessage.success('个人资料更新成功')
+    // 更新本地存储的用户信息
+    localStorage.setItem('user', JSON.stringify(userInfo.value))
   } catch (error) {
     console.error('更新个人资料失败:', error)
     ElMessage.error('更新个人资料失败')

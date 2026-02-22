@@ -257,7 +257,11 @@ const loadInventoryStats = async () => {
 // 加载结算统计
 const loadBillingStats = async () => {
   try {
-    const data = await api.get('/statistics/billing')
+    const params = {}
+    if (startDate.value) params.startDate = startDate.value
+    if (endDate.value) params.endDate = endDate.value
+    
+    const data = await api.get('/statistics/billing', params)
     billingStats.value = data
     
     // 转换状态统计为表格数据

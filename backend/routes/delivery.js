@@ -16,7 +16,9 @@ router.post('/', async (req, res) => {
 // 获取送水记录列表
 router.get('/', async (req, res) => {
   try {
-    const result = await deliveryService.getDeliveryRecordList();
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const result = await deliveryService.getDeliveryRecordList(page, pageSize);
     res.status(200).json({ code: 200, data: result, message: '获取成功' });
   } catch (error) {
     res.status(500).json({ code: 500, message: error.message });

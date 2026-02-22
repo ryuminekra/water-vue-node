@@ -37,7 +37,8 @@ router.get('/inventory', async (req, res) => {
 // 获取结算统计
 router.get('/billing', async (req, res) => {
   try {
-    const result = await statisticsService.getBillingStatistics();
+    const { startDate, endDate } = req.query;
+    const result = await statisticsService.getBillingStatistics(startDate, endDate);
     res.status(200).json({ code: 200, data: result, message: '获取成功' });
   } catch (error) {
     res.status(500).json({ code: 500, message: error.message });

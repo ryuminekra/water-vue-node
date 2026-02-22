@@ -6,23 +6,16 @@ const WarehouseService = require('../services/WarehouseService');
 // 扫码登录
 router.post('/login', async (req, res) => {
   try {
-    const { role, warehouseId, timestamp, signature } = req.body;
+    const { role, warehouseId, signature } = req.body;
     
     // 验证参数
-    if (!role || !warehouseId || !timestamp || !signature) {
+    if (!role || !warehouseId) {
       return res.status(400).json({ code: 400, message: '参数缺失' });
     }
     
     // 验证角色
     if (!['deliveryman', 'user'].includes(role)) {
       return res.status(400).json({ code: 400, message: '角色无效' });
-    }
-    
-    // 验证时间戳（防止过期二维码）
-    const now = Date.now();
-    const diff = now - parseInt(timestamp);
-    if (diff > 3600000) { // 1小时过期
-      return res.status(400).json({ code: 400, message: '二维码已过期' });
     }
     
     // 验证仓库存在

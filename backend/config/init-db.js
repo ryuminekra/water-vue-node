@@ -196,7 +196,7 @@ const initDatabase = async () => {
             returnEmptyBottles: Math.floor(Math.random() * 10), // 0-9之间的随机数量
             consumptionDate: new Date(date),
             notes: consumptionRemarks[Math.floor(Math.random() * consumptionRemarks.length)],
-            status: ['PENDING', 'APPROVED', 'REJECTED'][Math.floor(Math.random() * 3)] // 随机状态
+            status: 'APPROVED' // 固定为已批准状态
           });
         });
       });

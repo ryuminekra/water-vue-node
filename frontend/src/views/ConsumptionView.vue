@@ -27,7 +27,11 @@
         <el-table-column prop="receiver" label="领用人" width="120" />
         <el-table-column prop="quantity" label="领用数量" width="100" />
         <el-table-column prop="returnEmptyBottles" label="归还空桶数量" width="120" />
-        <el-table-column prop="consumptionDate" label="领用时间" width="180" />
+        <el-table-column label="领用时间" width="180">
+          <template #default="scope">
+            {{ formatDateTime(scope.row.consumptionDate) }}
+          </template>
+        </el-table-column>
         <el-table-column prop="notes" label="备注" />
         <el-table-column label="状态" width="100">
           <template #default="scope">
@@ -35,6 +39,17 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="pagination-container">
+        <el-pagination
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
+          :page-sizes="[10, 20, 50, 100]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
     </el-card>
 
     <!-- 领用申请对话框 -->
@@ -124,6 +139,11 @@ const departments = ref([])
 const consumptionList = ref([])
 const formRef = ref(null)
 
+// 分页相关
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
+
 const form = ref({
   waterCategoryId: '',
   warehouseId: '',
@@ -178,8 +198,13 @@ const loadDepartments = async () => {
 // 加载领用记录
 const loadConsumptionList = async () => {
   try {
-    const data = await api.get('/consumption')
-    consumptionList.value = data
+    const data = await api.get('/consumption', { page: currentPage.value, pageSize: pageSize.value })
+    if (data) {
+      consumptionList.value = data.data
+      total.value = data.total
+      currentPage.value = data.page
+      pageSize.value = data.pageSize
+    }
   } catch (error) {
     console.error('获取领用记录失败:', error)
     ElMessage.error('获取领用记录失败')
@@ -236,11 +261,37 @@ const getDepartmentName = (id) => {
 // 将英文状态转换为中文状态
 const getStatusText = (status) => {
   const statusMap = {
-    PENDING: '待处理',
-    APPROVED: '已批准',
-    REJECTED: '已拒绝'
+    RECEIVED: '已领取',
+    PENDING: '已领取',
+    APPROVED: '已领取',
+    REJECTED: '已领取'
   }
-  return statusMap[status] || status
+  return statusMap[status] || '已领取'
+}
+
+// 格式化日期时间为东八区，显示到分
+const formatDateTime = (dateStr) => {
+  if (!dateStr) return ''
+  const date = new Date(dateStr)
+  // 转换为东八区时间
+  const utc8Date = new Date(date.getTime() + 8 * 60 * 60 * 1000)
+  const year = utc8Date.getUTCFullYear()
+  const month = String(utc8Date.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(utc8Date.getUTCDate()).padStart(2, '0')
+  const hours = String(utc8Date.getUTCHours()).padStart(2, '0')
+  const minutes = String(utc8Date.getUTCMinutes()).padStart(2, '0')
+  return `${year}-${month}-${day} ${hours}:${minutes}`
+}
+
+// 分页事件处理
+const handleSizeChange = (size) => {
+  pageSize.value = size
+  loadConsumptionList()
+}
+
+const handleCurrentChange = (current) => {
+  currentPage.value = current
+  loadConsumptionList()
 }
 
 // 初始化数据
@@ -267,5 +318,11 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

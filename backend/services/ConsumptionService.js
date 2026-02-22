@@ -63,16 +63,27 @@ class ConsumptionService {
   }
 
   // 获取领用记录列表
-  async getConsumptionList() {
+  async getConsumptionList(page = 1, pageSize = 10) {
     try {
-      return await Consumption.findAll({
+      const offset = (page - 1) * pageSize;
+      
+      const { count, rows } = await Consumption.findAndCountAll({
         include: [{
           model: WaterCategory,
           as: 'waterCategory',
           attributes: ['id', 'name', 'unit', 'price']
         }],
-        order: [['consumptionDate', 'DESC']]
+        order: [['consumptionDate', 'DESC']],
+        limit: pageSize,
+        offset: offset
       });
+      
+      return {
+        total: count,
+        data: rows,
+        page: page,
+        pageSize: pageSize
+      };
     } catch (error) {
       throw new Error('获取领用记录列表失败: ' + error.message);
     }

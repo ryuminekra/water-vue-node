@@ -269,9 +269,11 @@ class DeliveryService {
   }
 
   // 获取送水记录列表
-  async getDeliveryRecordList() {
+  async getDeliveryRecordList(page = 1, pageSize = 10) {
     try {
-      return await DeliveryRecord.findAll({
+      const offset = (page - 1) * pageSize;
+      
+      const { count, rows } = await DeliveryRecord.findAndCountAll({
         include: [{
           model: WaterCategory,
           as: 'waterCategory',
@@ -281,8 +283,17 @@ class DeliveryService {
           as: 'warehouse',
           attributes: ['id', 'name']
         }],
-        order: [['date', 'DESC']]
+        order: [['date', 'DESC']],
+        limit: pageSize,
+        offset: offset
       });
+      
+      return {
+        total: count,
+        data: rows,
+        page: page,
+        pageSize: pageSize
+      };
     } catch (error) {
       throw new Error('获取送水记录列表失败: ' + error.message);
     }

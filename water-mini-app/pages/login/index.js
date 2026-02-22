@@ -19,7 +19,7 @@ Page({
           const qrData = JSON.parse(res.result);
           
           // 验证二维码数据
-          if (!qrData.role || !qrData.warehouseId) {
+          if (!qrData.role || !qrData.warehouseId || !qrData.signature) {
             wx.showToast({ title: '二维码格式错误', icon: 'none' });
             return;
           }

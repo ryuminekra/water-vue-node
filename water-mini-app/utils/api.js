@@ -7,6 +7,9 @@ function login(qrData) {
     wx.request({
       url: `${BASE_URL}/mini-app/login`,
       method: 'POST',
+      header: {
+        'Content-Type': 'application/json'
+      },
       data: qrData,
       success: (res) => {
         resolve(res.data);

@@ -43,6 +43,17 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="pagination-container">
+            <el-pagination
+              v-model:current-page="currentPage"
+              v-model:page-size="pageSize"
+              :page-sizes="[10, 20, 50, 100]"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
+          </div>
         </el-card>
       </el-tab-pane>
       <el-tab-pane label="饮用水品类" name="categories">
@@ -218,6 +229,11 @@ const deliveryRecords = ref([])
 const waterCategories = ref([])
 const warehouses = ref([])
 
+// 分页相关
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
+
 const form = ref({
   waterCategoryId: '',
   warehouseId: '',
@@ -247,8 +263,13 @@ const approveForm = ref({
 // 加载送水记录
 const loadDeliveryRecords = async () => {
   try {
-    const data = await Api.get('/delivery')
-    deliveryRecords.value = data
+    const data = await Api.get('/delivery', { page: currentPage.value, pageSize: pageSize.value })
+    if (data) {
+      deliveryRecords.value = data.data
+      total.value = data.total
+      currentPage.value = data.page
+      pageSize.value = data.pageSize
+    }
   } catch (error) {
     console.error('获取送水记录失败:', error)
   }
@@ -395,6 +416,17 @@ const submitApproval = async () => {
   }
 }
 
+// 分页事件处理
+const handleSizeChange = (size) => {
+  pageSize.value = size
+  loadDeliveryRecords()
+}
+
+const handleCurrentChange = (current) => {
+  currentPage.value = current
+  loadDeliveryRecords()
+}
+
 // 初始化数据
 onMounted(() => {
   loadWaterCategories()
@@ -424,5 +456,11 @@ onMounted(() => {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
