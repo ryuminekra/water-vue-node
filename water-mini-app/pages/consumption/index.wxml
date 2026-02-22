@@ -1,0 +1,77 @@
+<!-- consumption/index.wxml -->
+<view class="container">
+  <view class="form-wrapper">
+    <view class="form-item">
+      <text class="form-label">仓库信息</text>
+      <text class="warehouse-info">{{warehouse.name}}</text>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">领用部门</text>
+      <picker 
+        mode="selector" 
+        range="{{departments}}" 
+        range-key="name"
+        value="{{departmentIndex}}"
+        bindchange="bindDepartmentChange"
+      >
+        <view class="form-input">
+          {{departments[departmentIndex] ? departments[departmentIndex].name : '请选择部门'}}
+        </view>
+      </picker>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">领用人</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入领用人姓名" 
+        bindinput="bindReceiverInput"
+        value="{{receiver}}"
+      />
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">领用数量</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入领用数量" 
+        type="number" 
+        bindinput="bindQuantityInput"
+        value="{{quantity}}"
+      />
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">归还空桶数量</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入归还空桶数量" 
+        type="number" 
+        bindinput="bindEmptyBottleInput"
+        value="{{returnEmptyBottles}}"
+      />
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">领用时间</text>
+      <view class="form-input" style="background-color: #f5f5f5;">
+        {{consumptionDate}}
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">备注</text>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请输入备注信息" 
+        bindinput="bindNotesInput"
+        value="{{notes}}"
+      />
+    </view>
+    
+    <view class="btn-primary" bindtap="submitConsumption">
+      <text>提交领用申请</text>
+    </view>
+  </view>
+</view>

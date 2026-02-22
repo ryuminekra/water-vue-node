@@ -1,0 +1,68 @@
+/* login/index.wxss */
+.login-wrapper {
+  padding: 60rpx 30rpx;
+  background-color: white;
+  border-radius: 20rpx;
+  margin-top: 100rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
+.logo-text {
+  font-size: 44rpx;
+  font-weight: bold;
+  color: #1890ff;
+}
+
+.scan-tip {
+  text-align: center;
+  margin-bottom: 50rpx;
+}
+
+.tip-text {
+  font-size: 32rpx;
+  color: #333;
+}
+
+.scan-btn {
+  background-color: #1890ff;
+  color: white;
+  border-radius: 50rpx;
+  padding: 30rpx 0;
+  text-align: center;
+  margin-bottom: 60rpx;
+  box-shadow: 0 4rpx 12rpx rgba(24, 144, 255, 0.3);
+}
+
+.btn-text {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.role-info {
+  border-top: 2rpx solid #f0f0f0;
+  padding-top: 40rpx;
+}
+
+.role-item {
+  margin-bottom: 30rpx;
+}
+
+.role-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.role-desc {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.5;
+}

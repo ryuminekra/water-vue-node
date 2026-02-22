@@ -1,0 +1,24 @@
+<!-- success/index.wxml -->
+<view class="container">
+  <view class="success-wrapper">
+    <view class="success-icon">
+      <text class="icon-text">✓</text>
+    </view>
+    
+    <view class="success-text">
+      <text>操作成功</text>
+    </view>
+    
+    <view class="success-detail">
+      <text wx:if="{{operation === 'delivery'}}">送水数量: {{data.quantity}} 桶</text>
+      <text wx:if="{{operation === 'delivery'}}" style="display: block; margin-top: 10rpx;">空桶领取: {{data.emptyBucketQuantity}} 个</text>
+      <text wx:if="{{operation === 'consumption'}}">领用数量: {{data.quantity}} 桶</text>
+      <text wx:if="{{operation === 'consumption'}}" style="display: block; margin-top: 10rpx;">空桶归还: {{data.returnEmptyBottles}} 个</text>
+      <text style="display: block; margin-top: 10rpx;">操作时间: {{currentDate}}</text>
+    </view>
+    
+    <view class="btn-primary back-btn" bindtap="backToLogin">
+      <text>返回首页</text>
+    </view>
+  </view>
+</view>

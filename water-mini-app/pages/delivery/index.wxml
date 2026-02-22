@@ -1,0 +1,60 @@
+<!-- delivery/index.wxml -->
+<view class="container">
+  <view class="form-wrapper">
+    <view class="form-item">
+      <text class="form-label">仓库信息</text>
+      <text class="warehouse-info">{{warehouse.name}}</text>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">送水数量</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入送水数量" 
+        type="number" 
+        bindinput="bindQuantityInput"
+        value="{{quantity}}"
+      />
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">空桶领取数量</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入空桶领取数量" 
+        type="number" 
+        bindinput="bindEmptyBucketInput"
+        value="{{emptyBucketQuantity}}"
+      />
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">送水时间</text>
+      <picker 
+        mode="date" 
+        value="{{date}}" 
+        start="2020-01-01" 
+        end="2030-12-31"
+        bindchange="bindDateChange"
+      >
+        <view class="form-input">
+          {{date}}
+        </view>
+      </picker>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">备注</text>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请输入备注信息" 
+        bindinput="bindRemarkInput"
+        value="{{remark}}"
+      />
+    </view>
+    
+    <view class="btn-primary" bindtap="submitDelivery">
+      <text>提交送水记录</text>
+    </view>
+  </view>
+</view>

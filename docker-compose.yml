@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: water_system
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - water-network
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: water_system
+      DB_USER: root
+      DB_PASSWORD: 123456
+      JWT_SECRET: your_jwt_secret_key
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    networks:
+      - water-network
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    networks:
+      - water-network
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
+
+networks:
+  water-network:
+    driver: bridge

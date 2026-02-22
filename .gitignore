@@ -1,0 +1,74 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Build files
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+Thumbs.db
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Logs
+logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Docker files
+docker-compose.override.yml
+
+# Local development
+.local/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Production
+production/
+
+# Misc
+.env.example
+.env.sample
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Backend
+backend/node_modules/
+
+# Mini app
+water-mini-app/node_modules/

@@ -1,0 +1,27 @@
+<!-- login/index.wxml -->
+<view class="container">
+  <view class="login-wrapper">
+    <view class="logo">
+      <text class="logo-text">饮用水领用系统</text>
+    </view>
+    
+    <view class="scan-tip">
+      <text class="tip-text">请扫描对应角色的二维码</text>
+    </view>
+    
+    <view class="scan-btn" bindtap="scanCode">
+      <text class="btn-text">点击扫码</text>
+    </view>
+    
+    <view class="role-info">
+      <view class="role-item">
+        <text class="role-title">送水员二维码</text>
+        <text class="role-desc">用于记录送水和领取空桶</text>
+      </view>
+      <view class="role-item">
+        <text class="role-title">领用人二维码</text>
+        <text class="role-desc">用于申请领用和归还空桶</text>
+      </view>
+    </view>
+  </view>
+</view>

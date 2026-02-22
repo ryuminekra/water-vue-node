@@ -1,0 +1,26 @@
+/* success/index.wxss */
+.success-wrapper {
+  padding: 60rpx 30rpx;
+  background-color: white;
+  border-radius: 20rpx;
+  margin-top: 100rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.success-icon {
+  width: 150rpx;
+  height: 150rpx;
+  background-color: #52c41a;
+  border-radius: 50%;
+  margin: 0 auto 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-text {
+  font-size: 80rpx;
+  color: white;
+  font-weight: bold;
+}

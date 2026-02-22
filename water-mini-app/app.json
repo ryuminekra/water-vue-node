@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "pages/login/index",
+    "pages/delivery/index",
+    "pages/consumption/index",
+    "pages/success/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "饮用水领用系统",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json"
+}

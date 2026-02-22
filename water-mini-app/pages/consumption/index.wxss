@@ -1,0 +1,15 @@
+/* consumption/index.wxss */
+.form-wrapper {
+  padding: 30rpx;
+  background-color: white;
+  border-radius: 20rpx;
+  margin-top: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.warehouse-info {
+  font-size: 28rpx;
+  color: #1890ff;
+  font-weight: bold;
+  padding: 20rpx 0;
+}

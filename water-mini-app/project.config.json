@@ -1,0 +1,74 @@
+{
+  "description": "饮用水领用系统小程序",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": false,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
+    "preloadSnsData": false,
+    "disableUseStrict": false,
+    "minifyWXSS": true,
+    "disablePostcss": false,
+    "compileType": "miniprogram",
+    "minifyWXML": true,
+    "showES6CompileOption": false,
+    "compileWorklet": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "localPlugins": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.19.4",
+  "appid": "wx9acd52b5d4ffccd4",
+  "projectname": "饮用水领用系统",
+  "isGameTourist": false,
+  "condition": {
+    "search": {
+      "list": []
+    },
+    "conversation": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "plugin": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": []
+    }
+  },
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {}
+}
