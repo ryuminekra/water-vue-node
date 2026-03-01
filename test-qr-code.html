@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试二维码</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+</head>
+<body>
+    <h1>测试二维码</h1>
+    <div id="qrcode"></div>
+    <p>二维码内容：{"role":"user","warehouseId":1,"signature":"test-signature"}</p>
+    
+    <script>
+        // 二维码内容
+        const qrContent = '{"role":"user","warehouseId":1,"signature":"test-signature"}';
+        
+        // 生成二维码
+        QRCode.toCanvas(document.getElementById('qrcode'), qrContent, {
+            width: 300,
+            margin: 1,
+            color: {
+                dark: '#000000',
+                light: '#FFFFFF'
+            }
+        }, function (error) {
+            if (error) console.error(error);
+            console.log('二维码生成成功');
+        });
+    </script>
+</body>
+</html>

@@ -1,18 +1,29 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const http = require('http');
 const initDatabase = require('./config/init-db');
-
 // 加载环境变量
 dotenv.config();
 
 // 创建 Express 应用
 const app = express();
 
+
+
 // 配置中间件
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'Content-Type', 'Authorization'],
+  credentials: true,
+  maxAge: 86400
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// 处理 OPTIONS 请求
+app.options('*', cors());
 
 // 导入路由
 const authRoutes = require('./routes/auth');
@@ -42,7 +53,7 @@ app.use('/api/statistics', authMiddleware, statisticsRoutes);
 app.use('/api/system', authMiddleware, systemRoutes);
 
 // 健康检查
-app.get('/health', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
@@ -60,12 +71,17 @@ app.use((err, req, res, next) => {
 // 启动服务器
 const startServer = async () => {
   try {
-    // 初始化数据库
-    await initDatabase();
+    // 只有在设置了 INIT_DB 环境变量时才初始化数据库
+    if (process.env.INIT_DB === 'true') {
+      console.log('正在初始化数据库...');
+      await initDatabase();
+    } else {
+      console.log('跳过数据库初始化');
+    }
     
-    // 启动服务器
+    // 启动HTTP服务器
     const PORT = process.env.PORT || 8080;
-    app.listen(PORT, '0.0.0.0', () => {
+    const server = http.createServer(app).listen(PORT, '0.0.0.0', () => {
       console.log(`服务器运行在 http://0.0.0.0:${PORT}`);
     });
   } catch (error) {

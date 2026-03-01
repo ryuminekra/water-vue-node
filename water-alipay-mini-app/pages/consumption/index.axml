@@ -1,0 +1,79 @@
+<view class="container">
+  <view class="title">领用记录</view>
+  
+  <view class="form-item">
+    <text class="label">仓库名称：</text>
+    <text class="value">{{warehouse.name}}</text>
+  </view>
+  
+  <view class="form-item">
+    <text class="label">领用部门：</text>
+    <picker 
+      class="select" 
+      value="{{departmentIndex}}" 
+      range="{{departments}}" 
+      range-key="name" 
+      onPickerChange="onDepartmentChange"
+    >
+      <view class="picker-text">
+        {{departments[departmentIndex] ? departments[departmentIndex].name : '请选择部门'}}
+      </view>
+    </picker>
+  </view>
+  
+  <view class="form-item">
+    <text class="label">领用人：</text>
+    <input 
+      class="input" 
+      placeholder="请输入领用人" 
+      value="{{receiver}}" 
+      onInput="onReceiverInput"
+    />
+  </view>
+  
+  <view class="form-item">
+    <text class="label">领用数量：</text>
+    <input 
+      class="input" 
+      placeholder="请输入领用数量" 
+      value="{{quantity}}" 
+      onInput="onQuantityInput"
+      type="number"
+    />
+  </view>
+  
+  <view class="form-item">
+    <text class="label">归还空桶数量：</text>
+    <input 
+      class="input" 
+      placeholder="请输入归还空桶数量" 
+      value="{{returnEmptyBottles}}" 
+      onInput="onEmptyBottleInput"
+      type="number"
+    />
+  </view>
+  
+  <view class="form-item">
+    <text class="label">领用日期：</text>
+    <input 
+      class="input" 
+      placeholder="请选择领用日期" 
+      value="{{consumptionDate}}" 
+      type="date"
+    />
+  </view>
+  
+  <view class="form-item">
+    <text class="label">备注：</text>
+    <textarea 
+      class="textarea" 
+      placeholder="请输入备注信息" 
+      value="{{notes}}" 
+      onInput="onNotesInput"
+    />
+  </view>
+  
+  <view class="button" onTap="submitConsumption">
+    <text>提交领用记录</text>
+  </view>
+</view>

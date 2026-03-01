@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付宝小程序扫码测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #1890ff;
+        }
+        .container {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .qrcode {
+            margin: 20px 0;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #1890ff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .btn:hover {
+            background: #40a9ff;
+        }
+        .note {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>支付宝小程序扫码自动登录测试</h1>
+    
+    <div class="note">
+        <strong>测试说明：</strong>
+        <ul>
+            <li>使用支付宝扫码下方二维码</li>
+            <li>扫码后会自动跳转到支付宝小程序</li>
+            <li>小程序会自动检测参数并完成登录</li>
+            <li>根据角色自动跳转到对应页面</li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h2>角色：领用人 (user)</h2>
+        <p>仓库ID：1</p>
+        <p>签名：test-signature-user</p>
+        <div class="qrcode">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=alipays%3A%2F%2Fplatformapi%2Fstartapp%3FappId%3D2021002123624345%26page%3Dpages%2Flogin%2Findex%26role%3Duser%26warehouseId%3D1%26signature%3Dtest-signature-user" alt="领用人二维码">
+        </div>
+        <a href="alipays://platformapi/startapp?appId=2021002123624345&page=pages/login/index&role=user&warehouseId=1&signature=test-signature-user" class="btn">点击打开支付宝小程序（领用人）</a>
+    </div>
+
+    <div class="container">
+        <h2>角色：送水员 (deliveryman)</h2>
+        <p>仓库ID：2</p>
+        <p>签名：test-signature-delivery</p>
+        <div class="qrcode">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=alipays%3A%2F%2Fplatformapi%2Fstartapp%3FappId%3D2021002123624345%26page%3Dpages%2Flogin%2Findex%26role%3Ddeliveryman%26warehouseId%3D2%26signature%3Dtest-signature-delivery" alt="送水员二维码">
+        </div>
+        <a href="alipays://platformapi/startapp?appId=2021002123624345&page=pages/login/index&role=deliveryman&warehouseId=2&signature=test-signature-delivery" class="btn">点击打开支付宝小程序（送水员）</a>
+    </div>
+
+    <div class="note">
+        <strong>注意事项：</strong>
+        <ul>
+            <li>请将 <code>appId</code> 替换为您实际的支付宝小程序AppID</li>
+            <li>确保后端服务运行在 <code>http://localhost:8080</code></li>
+            <li>测试时需要在支付宝开发者工具中开启"模拟扫码"功能</li>
+        </ul>
+    </div>
+
+    <h2>实现原理</h2>
+    <ol>
+        <li><strong>生成Scheme链接：</strong>使用 <code>alipays://platformapi/startapp</code> 格式构造链接</li>
+        <li><strong>传递参数：</strong>在链接中包含 <code>role</code>、<code>warehouseId</code>、<code>signature</code> 等参数</li>
+        <li><strong>小程序启动检测：</strong>在 <code>app.js</code> 的 <code>onLaunch</code> 和 <code>onShow</code> 方法中检测参数</li>
+        <li><strong>自动登录：</strong>检测到参数后自动调用登录API完成登录</li>
+        <li><strong>角色跳转：</strong>根据登录角色自动跳转到对应功能页面</li>
+    </ol>
+</body>
+</html>

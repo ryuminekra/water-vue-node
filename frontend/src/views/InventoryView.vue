@@ -8,7 +8,7 @@
         </div>
       </template>
       <el-table :data="inventoryList" style="width: 100%">
-        <el-table-column prop="location" label="存放位置" />
+        <el-table-column prop="warehouse.name" label="仓库名称" />
         <el-table-column prop="waterCategory.name" label="送水入库品类" />
         <el-table-column prop="quantity" label="数量" />
         <el-table-column prop="remainingEmptyBuckets" label="剩余空桶数量" />
@@ -36,7 +36,7 @@
         </div>
       </template>
       <el-table :data="alertList" style="width: 100%">
-        <el-table-column prop="location" label="存放位置" />
+        <el-table-column prop="warehouse.name" label="仓库名称" />
         <el-table-column prop="waterCategory.name" label="送水入库品类" />
         <el-table-column prop="quantity" label="数量" />
       </el-table>
@@ -142,7 +142,7 @@ onMounted(() => {
 <style scoped>
 .inventory-container {
   padding: 20px;
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
 }
 

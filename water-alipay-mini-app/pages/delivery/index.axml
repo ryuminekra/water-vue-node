@@ -1,0 +1,55 @@
+<view class="container">
+  <view class="title">送水记录</view>
+  
+  <view class="form-item">
+    <text class="label">仓库名称：</text>
+    <text class="value">{{warehouse.name}}</text>
+  </view>
+  
+  <view class="form-item">
+    <text class="label">送水数量：</text>
+    <input 
+      class="input" 
+      placeholder="请输入送水数量" 
+      value="{{quantity}}" 
+      onInput="onQuantityInput"
+      type="number"
+    />
+  </view>
+  
+  <view class="form-item">
+    <text class="label">空桶领取数量：</text>
+    <input 
+      class="input" 
+      placeholder="请输入空桶领取数量" 
+      value="{{emptyBucketQuantity}}" 
+      onInput="onEmptyBucketInput"
+      type="number"
+    />
+  </view>
+  
+  <view class="form-item">
+    <text class="label">送水日期：</text>
+    <input 
+      class="input" 
+      placeholder="请选择送水日期" 
+      value="{{date}}" 
+      onInput="onDateChange"
+      type="date"
+    />
+  </view>
+  
+  <view class="form-item">
+    <text class="label">备注：</text>
+    <textarea 
+      class="textarea" 
+      placeholder="请输入备注信息" 
+      value="{{remark}}" 
+      onInput="onRemarkInput"
+    />
+  </view>
+  
+  <view class="button" onTap="submitDelivery">
+    <text>提交送水记录</text>
+  </view>
+</view>

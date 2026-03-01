@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生成二维码</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #555;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #5a6fd8;
+    }
+    .qr-container {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .qr-item {
+      display: inline-block;
+      margin: 20px;
+      text-align: center;
+    }
+    .qr-code {
+      border: 1px solid #ddd;
+      padding: 10px;
+      background-color: white;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .qr-info {
+      font-size: 14px;
+      color: #666;
+    }
+    .instructions {
+      background-color: #f0f7ff;
+      padding: 15px;
+      border-left: 4px solid #667eea;
+      margin-bottom: 20px;
+    }
+    .instructions h3 {
+      margin-top: 0;
+      color: #333;
+    }
+    .instructions p {
+      margin-bottom: 10px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>生成二维码</h1>
+    
+    <div class="instructions">
+      <h3>使用说明</h3>
+      <p>1. 选择角色类型（领用人或送水员）</p>
+      <p>2. 输入仓库ID</p>
+      <p>3. 点击"生成二维码"按钮</p>
+      <p>4. 使用手机扫描生成的二维码</p>
+      <p>5. 扫码后会自动跳转到扫码登录页面并执行相应操作</p>
+    </div>
+    
+    <div class="form-group">
+      <label for="role">角色类型</label>
+      <select id="role">
+        <option value="user">领用人</option>
+        <option value="deliveryman">送水员</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="warehouseId">仓库ID</label>
+      <input type="number" id="warehouseId" placeholder="请输入仓库ID" value="1">
+    </div>
+    
+    <div class="form-group">
+      <label for="baseUrl">基础URL（局域网地址）</label>
+      <input type="text" id="baseUrl" placeholder="请输入系统的局域网地址" value="https://10.1.136.70">
+    </div>
+    
+    <button onclick="generateQRCode()">生成二维码</button>
+    <button onclick="clearQRCode()">清空</button>
+    
+    <div id="qr-container" class="qr-container"></div>
+  </div>
+  
+  <script>
+    function generateQRCode() {
+      const role = document.getElementById('role').value;
+      const warehouseId = document.getElementById('warehouseId').value;
+      const baseUrl = document.getElementById('baseUrl').value;
+      
+      if (!warehouseId) {
+        alert('请输入仓库ID');
+        return;
+      }
+      
+      // 生成二维码数据
+      const qrData = {
+        role: role,
+        warehouseId: warehouseId,
+        signature: 'permanent-signature-' + role
+      };
+      
+      // 构建URL
+      const url = `${baseUrl}/scan-login?role=${role}&warehouseId=${warehouseId}&signature=permanent-signature-${role}`;
+      
+      // 生成二维码
+      const qrContainer = document.getElementById('qr-container');
+      qrContainer.innerHTML = '';
+      
+      const qrItem = document.createElement('div');
+      qrItem.className = 'qr-item';
+      
+      const qrCode = document.createElement('div');
+      qrCode.className = 'qr-code';
+      qrItem.appendChild(qrCode);
+      
+      const qrInfo = document.createElement('div');
+      qrInfo.className = 'qr-info';
+      qrInfo.innerHTML = `
+        <p>角色: ${role === 'user' ? '领用人' : '送水员'}</p>
+        <p>仓库ID: ${warehouseId}</p>
+        <p>URL: ${url}</p>
+      `;
+      qrItem.appendChild(qrInfo);
+      
+      qrContainer.appendChild(qrItem);
+      
+      // 生成二维码
+      QRCode.toCanvas(qrCode, url, {
+        width: 200,
+        margin: 1,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      }, function(error) {
+        if (error) {
+          console.error(error);
+          alert('生成二维码失败');
+        }
+      });
+    }
+    
+    function clearQRCode() {
+      document.getElementById('qr-container').innerHTML = '';
+    }
+    
+    // 页面加载时生成默认二维码
+    window.onload = function() {
+      generateQRCode();
+    };
+  </script>
+</body>
+</html>

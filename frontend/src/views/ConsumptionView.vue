@@ -14,16 +14,8 @@
       <el-table :data="consumptionList" style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="waterCategory.name" label="饮用水品类" />
-        <el-table-column label="领用仓库" width="120">
-          <template #default="scope">
-            {{ getWarehouseName(scope.row.warehouseId) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="领用部门" width="120">
-          <template #default="scope">
-            {{ getDepartmentName(scope.row.departmentId) }}
-          </template>
-        </el-table-column>
+        <el-table-column prop="warehouse.name" label="领用仓库" width="120" />
+        <el-table-column prop="department.name" label="领用部门" width="120" />
         <el-table-column prop="receiver" label="领用人" width="120" />
         <el-table-column prop="quantity" label="领用数量" width="100" />
         <el-table-column prop="returnEmptyBottles" label="归还空桶数量" width="120" />
@@ -244,19 +236,7 @@ const resetForm = () => {
   }
 }
 
-// 根据仓库ID获取仓库名称
-const getWarehouseName = (id) => {
-  if (!id) return ''
-  const warehouse = warehouses.value.find(w => w.id === id)
-  return warehouse ? warehouse.name : id
-}
 
-// 根据部门ID获取部门名称
-const getDepartmentName = (id) => {
-  if (!id) return ''
-  const department = departments.value.find(d => d.id === id)
-  return department ? department.name : id
-}
 
 // 将英文状态转换为中文状态
 const getStatusText = (status) => {
@@ -306,7 +286,7 @@ onMounted(() => {
 <style scoped>
 .consumption-container {
   padding: 20px;
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
 }
 

@@ -16,9 +16,9 @@ const initDatabase = async () => {
   try {
     console.log('开始初始化数据库...');
     
-    // 自动创建表结构
-    await sequelize.sync({ force: true });
-    console.log('表结构创建成功');
+    // 自动创建表结构（只修改结构，不删除数据）
+    await sequelize.sync({ alter: true });
+    console.log('表结构更新成功');
     
     // 初始化部门数据
     const departments = await Department.bulkCreate([
@@ -31,7 +31,9 @@ const initDatabase = async () => {
     
     // 初始化用户数据
     const hashedPassword = await bcrypt.hash('123456', 10);
-    await User.bulkCreate([
+    
+    // 先检查用户是否存在，不存在则创建
+    const users = [
       {
         username: 'admin',
         password: hashedPassword,
@@ -62,7 +64,22 @@ const initDatabase = async () => {
         role: 'deliveryman',
         status: 1
       }
-    ]);
+    ];
+    
+    for (const userData of users) {
+      const existingUser = await User.findOne({ where: { username: userData.username } });
+      if (!existingUser) {
+        await User.create(userData);
+        console.log(`创建用户: ${userData.username}`);
+      } else {
+        // 更新密码和状态
+        await existingUser.update({
+          password: userData.password,
+          status: userData.status
+        });
+        console.log(`更新用户: ${userData.username}`);
+      }
+    }
     console.log('初始化用户数据成功');
     
     // 初始化饮用水品类数据

@@ -1,0 +1,4 @@
+<view class="container">
+  <text>测试页面</text>
+  <button type="primary" bindtap="testClick">点击测试</button>
+</view>

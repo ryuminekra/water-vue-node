@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/login/index",
+    "pages/delivery/index",
+    "pages/consumption/index",
+    "pages/success/index",
+    "pages/test/index",
+    "pages/simple-test/index",
+    "pages/account-login/index"
+  ],
+  "window": {
+    "defaultTitle": "饮用水领用系统",
+    "backgroundColor": "#ffffff",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "饮用水领用系统",
+    "navigationBarTextStyle": "black"
+  },
+  "permission": {
+    "scope.camera": {
+      "desc": "用于扫描二维码登录"
+    },
+    "scope.album": {
+      "desc": "用于从相册选择二维码图片"
+    }
+  }
+}

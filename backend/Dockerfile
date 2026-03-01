@@ -7,6 +7,8 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+# 复制SSL证书
+COPY ssl ./ssl
 
 EXPOSE 8080
 

@@ -1,0 +1,9 @@
+<view class="container">
+  <view class="title">测试页面</view>
+  <view class="button" bindtap="testToast">
+    <text>测试Toast</text>
+  </view>
+  <view class="button" bindtap="testScan">
+    <text>测试扫码</text>
+  </view>
+</view>

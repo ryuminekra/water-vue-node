@@ -72,6 +72,14 @@ class ConsumptionService {
           model: WaterCategory,
           as: 'waterCategory',
           attributes: ['id', 'name', 'unit', 'price']
+        }, {
+          model: Warehouse,
+          as: 'warehouse',
+          attributes: ['id', 'name']
+        }, {
+          model: Department,
+          as: 'department',
+          attributes: ['id', 'name']
         }],
         order: [['consumptionDate', 'DESC']],
         limit: pageSize,

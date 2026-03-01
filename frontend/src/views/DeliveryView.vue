@@ -34,7 +34,7 @@
                 <el-button type="primary" size="small" @click="editRecord(scope.row)">
                   编辑
                 </el-button>
-                <el-button v-if="scope.row.status === 'PENDING'" type="success" size="small" @click="approveRecord(scope.row)">
+                <el-button v-if="scope.row.status === 'PENDING' && currentUser?.role !== 'deliveryman'" type="success" size="small" @click="approveRecord(scope.row)">
                   审批
                 </el-button>
                 <el-button type="danger" size="small" @click="deleteRecord(scope.row.id)">
@@ -221,6 +221,13 @@ import { ref, onMounted } from 'vue'
 import { Plus } from '@element-plus/icons-vue'
 import Api from '../utils/api'
 
+// 获取当前用户信息
+const currentUser = ref(null)
+
+const getCurrentUser = () => {
+  currentUser.value = Api.getCurrentUser()
+}
+
 const activeTab = ref('records')
 const dialogVisible = ref(false)
 const categoryDialogVisible = ref(false)
@@ -239,7 +246,7 @@ const form = ref({
   warehouseId: '',
   quantity: '',
   emptyBucketQuantity: 0,
-  date: '',
+  date: null,
   remark: ''
 })
 
@@ -298,12 +305,21 @@ const loadWarehouses = async () => {
 // 保存送水记录
 const saveRecord = async () => {
   try {
+    // 处理日期值，确保格式正确
+    const submitData = { ...form.value }
+    if (submitData.date) {
+      // 确保日期被正确转换为字符串格式
+      if (submitData.date instanceof Date) {
+        submitData.date = submitData.date.toISOString().split('T')[0]
+      }
+    }
+    
     if (form.value.id) {
       // 更新
-      await Api.put(`/delivery/${form.value.id}`, form.value)
+      await Api.put(`/delivery/${form.value.id}`, submitData)
     } else {
       // 新增
-      await Api.post('/delivery', form.value)
+      await Api.post('/delivery', submitData)
     }
     dialogVisible.value = false
     loadDeliveryRecords()
@@ -391,6 +407,9 @@ const getStatusTagType = (status) => {
 
 // 打开审批对话框
 const approveRecord = (row) => {
+  if (currentUser.value?.role === 'deliveryman') {
+    return
+  }
   approveForm.value = {
     id: row.id,
     waterCategoryName: row.waterCategory?.name || '',
@@ -405,6 +424,9 @@ const approveRecord = (row) => {
 
 // 提交审批
 const submitApproval = async () => {
+  if (currentUser.value?.role === 'deliveryman') {
+    return
+  }
   try {
     await Api.put(`/delivery/${approveForm.value.id}/approve`, {
       status: approveForm.value.status
@@ -429,6 +451,7 @@ const handleCurrentChange = (current) => {
 
 // 初始化数据
 onMounted(() => {
+  getCurrentUser()
   loadWaterCategories()
   loadWarehouses()
   loadDeliveryRecords()
@@ -438,7 +461,7 @@ onMounted(() => {
 <style scoped>
 .delivery-container {
   padding: 20px;
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
 }
 

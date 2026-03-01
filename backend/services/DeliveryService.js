@@ -85,9 +85,29 @@ class DeliveryService {
         const isAdmin = data.isAdmin || false;
         const status = isAdmin ? 'APPROVED' : 'PENDING';
         
+        // 验证并处理日期值
+        if (!data.date) {
+          throw new Error('送水日期不能为空');
+        }
+        
+        // 确保日期格式正确
+        let formattedDate = data.date;
+        if (typeof formattedDate === 'string') {
+          // 尝试解析日期字符串
+          const dateObj = new Date(formattedDate);
+          if (isNaN(dateObj.getTime())) {
+            throw new Error('送水日期格式无效');
+          }
+          // 转换为 YYYY-MM-DD 格式
+          formattedDate = dateObj.toISOString().split('T')[0];
+        } else if (formattedDate instanceof Date) {
+          // 如果是 Date 对象，转换为 YYYY-MM-DD 格式
+          formattedDate = formattedDate.toISOString().split('T')[0];
+        }
+        
         // 创建送水记录
         const record = await DeliveryRecord.create(
-          { ...data, status },
+          { ...data, date: formattedDate, status },
           { transaction }
         );
         
@@ -332,6 +352,30 @@ class DeliveryService {
         throw new Error('送水记录不存在');
       }
       
+      // 检查状态是否可以编辑
+      if (record.status !== 'PENDING') {
+        throw new Error('送水记录已审批，无法编辑');
+      }
+      
+      // 验证并处理日期值（如果提供了日期）
+      if (data.date) {
+        // 确保日期格式正确
+        let formattedDate = data.date;
+        if (typeof formattedDate === 'string') {
+          // 尝试解析日期字符串
+          const dateObj = new Date(formattedDate);
+          if (isNaN(dateObj.getTime())) {
+            throw new Error('送水日期格式无效');
+          }
+          // 转换为 YYYY-MM-DD 格式
+          formattedDate = dateObj.toISOString().split('T')[0];
+        } else if (formattedDate instanceof Date) {
+          // 如果是 Date 对象，转换为 YYYY-MM-DD 格式
+          formattedDate = formattedDate.toISOString().split('T')[0];
+        }
+        data.date = formattedDate;
+      }
+      
       await record.update(data);
       
       // 记录系统日志
@@ -352,6 +396,11 @@ class DeliveryService {
       const record = await DeliveryRecord.findByPk(id);
       if (!record) {
         throw new Error('送水记录不存在');
+      }
+      
+      // 检查状态是否可以删除
+      if (record.status !== 'PENDING') {
+        throw new Error('送水记录已审批，无法删除');
       }
       
       await record.destroy();

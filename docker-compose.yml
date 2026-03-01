@@ -15,6 +15,7 @@ services:
 
   backend:
     build: ./backend
+    image: water-system-backend:v1.0.5
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
@@ -32,8 +33,9 @@ services:
 
   frontend:
     build: ./frontend
+    image: water-system-frontend:v1.0.5
     ports:
-      - "80:80"
+      - "3000:3000"
     networks:
       - water-network
     restart: unless-stopped
@@ -44,3 +46,7 @@ volumes:
 networks:
   water-network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/16

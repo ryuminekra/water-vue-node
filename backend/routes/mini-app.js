@@ -20,9 +20,6 @@ router.post('/login', async (req, res) => {
     
     // 验证仓库存在
     const warehouse = await WarehouseService.getWarehouseById(warehouseId);
-    if (!warehouse) {
-      return res.status(400).json({ code: 400, message: '仓库不存在' });
-    }
     
     // 验证签名（实际项目中需要更复杂的签名验证）
     // 这里简化处理，实际应该使用密钥生成和验证签名
@@ -37,6 +34,9 @@ router.post('/login', async (req, res) => {
     res.json({ code: 200, data: { token, role, warehouse }, message: '登录成功' });
   } catch (error) {
     console.error('扫码登录失败:', error);
+    if (error.message.includes('仓库不存在')) {
+      return res.status(400).json({ code: 400, message: '仓库不存在' });
+    }
     res.status(500).json({ code: 500, message: '服务器错误' });
   }
 });

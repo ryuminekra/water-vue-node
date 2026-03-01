@@ -10,11 +10,17 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:alpine
+FROM node:20-alpine
 
-COPY --from=build /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-EXPOSE 80
+# 安装静态文件服务器
+RUN npm install -g serve
 
-CMD ["nginx", "-g", "daemon off;"]
+# 复制构建产物
+COPY --from=build /app/dist /app/dist
+
+EXPOSE 3000
+
+# 使用serve命令提供静态文件
+CMD ["serve", "-s", "dist", "-l", "3000"]

@@ -8,6 +8,8 @@ import StatisticsView from '../views/StatisticsView.vue'
 import SystemView from '../views/SystemView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import LoginView from '../views/LoginView.vue'
+import ScanLoginView from '../views/ScanLoginView.vue'
+import SuccessView from '../views/SuccessView.vue'
 
 // 路由保护
 const requireAuth = (to, from, next) => {
@@ -26,6 +28,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/scan-login',
+      name: 'scan-login',
+      component: ScanLoginView
     },
     {
       path: '/',
@@ -73,6 +80,12 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: ProfileView,
+      beforeEnter: requireAuth
+    },
+    {
+      path: '/success',
+      name: 'success',
+      component: SuccessView,
       beforeEnter: requireAuth
     }
   ]

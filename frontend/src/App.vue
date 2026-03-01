@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
-    <!-- 登录页面 -->
-    <template v-if="$route.path === '/login'">
+    <!-- 登录页面、扫码登录页面和成功页面 -->
+    <template v-if="$route.path === '/login' || $route.path === '/scan-login' || $route.path === '/success'">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />
@@ -9,7 +9,7 @@
       </router-view>
     </template>
     
-    <!-- 系统页面 -->
+    <!-- 系统页面（根据角色显示不同菜单） -->
     <template v-else>
       <el-container style="height: 100vh;">
         <!-- 侧边栏 -->
@@ -23,34 +23,59 @@
             <el-icon v-else><ArrowRight /></el-icon>
           </div>
           <div class="nav-menu">
+            <!-- 通用菜单 -->
             <router-link to="/" class="nav-item">
               <el-icon><House /></el-icon>
               <span v-if="!isCollapsed">首页</span>
             </router-link>
-            <router-link to="/delivery" class="nav-item">
-              <el-icon><Van /></el-icon>
-              <span v-if="!isCollapsed">送水管理</span>
-            </router-link>
-            <router-link to="/inventory" class="nav-item">
-              <el-icon><Box /></el-icon>
-              <span v-if="!isCollapsed">库存管理</span>
-            </router-link>
-            <router-link to="/consumption" class="nav-item">
-              <el-icon><TakeawayBox /></el-icon>
-              <span v-if="!isCollapsed">领用管理</span>
-            </router-link>
-            <router-link to="/billing" class="nav-item">
-              <el-icon><Wallet /></el-icon>
-              <span v-if="!isCollapsed">结算管理</span>
-            </router-link>
-            <router-link to="/statistics" class="nav-item">
-              <el-icon><PieChart /></el-icon>
-              <span v-if="!isCollapsed">统计分析</span>
-            </router-link>
-            <router-link to="/system" class="nav-item">
-              <el-icon><Setting /></el-icon>
-              <span v-if="!isCollapsed">系统设置</span>
-            </router-link>
+            
+            <!-- 送水员菜单 -->
+            <template v-if="currentUser?.role === 'deliveryman'">
+              <router-link to="/delivery" class="nav-item">
+                <el-icon><Van /></el-icon>
+                <span v-if="!isCollapsed">送水管理</span>
+              </router-link>
+              <router-link to="/inventory" class="nav-item">
+                <el-icon><Box /></el-icon>
+                <span v-if="!isCollapsed">库存管理</span>
+              </router-link>
+            </template>
+            
+            <!-- 普通用户菜单 -->
+            <template v-else-if="currentUser?.role === 'user'">
+              <router-link to="/consumption" class="nav-item">
+                <el-icon><TakeawayBox /></el-icon>
+                <span v-if="!isCollapsed">领用管理</span>
+              </router-link>
+            </template>
+            
+            <!-- 管理员菜单 -->
+            <template v-else-if="currentUser?.role === 'admin'">
+              <router-link to="/delivery" class="nav-item">
+                <el-icon><Van /></el-icon>
+                <span v-if="!isCollapsed">送水管理</span>
+              </router-link>
+              <router-link to="/inventory" class="nav-item">
+                <el-icon><Box /></el-icon>
+                <span v-if="!isCollapsed">库存管理</span>
+              </router-link>
+              <router-link to="/consumption" class="nav-item">
+                <el-icon><TakeawayBox /></el-icon>
+                <span v-if="!isCollapsed">领用管理</span>
+              </router-link>
+              <router-link to="/billing" class="nav-item">
+                <el-icon><Wallet /></el-icon>
+                <span v-if="!isCollapsed">结算管理</span>
+              </router-link>
+              <router-link to="/statistics" class="nav-item">
+                <el-icon><PieChart /></el-icon>
+                <span v-if="!isCollapsed">统计分析</span>
+              </router-link>
+              <router-link to="/system" class="nav-item">
+                <el-icon><Setting /></el-icon>
+                <span v-if="!isCollapsed">系统设置</span>
+              </router-link>
+            </template>
           </div>
         </el-aside>
         

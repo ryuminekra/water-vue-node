@@ -1,0 +1,44 @@
+<view class="container">
+  <view class="title">操作成功</view>
+  
+  <view class="result">
+    <view class="result-item">
+      <text class="label">操作类型：</text>
+      <text class="value">{{operation === 'delivery' ? '送水记录' : '领用记录'}}</text>
+    </view>
+    
+    <view class="result-item" a:if="{{operation === 'delivery'}}">
+      <text class="label">送水数量：</text>
+      <text class="value">{{data.quantity}} 桶</text>
+    </view>
+    
+    <view class="result-item" a:if="{{operation === 'delivery'}}">
+      <text class="label">空桶领取：</text>
+      <text class="value">{{data.emptyBucketQuantity}} 个</text>
+    </view>
+    
+    <view class="result-item" a:if="{{operation === 'consumption'}}">
+      <text class="label">领用数量：</text>
+      <text class="value">{{data.quantity}} 桶</text>
+    </view>
+    
+    <view class="result-item" a:if="{{operation === 'consumption'}}">
+      <text class="label">归还空桶：</text>
+      <text class="value">{{data.returnEmptyBottles}} 个</text>
+    </view>
+    
+    <view class="result-item" a:if="{{operation === 'consumption'}}">
+      <text class="label">领用人：</text>
+      <text class="value">{{data.receiver}}</text>
+    </view>
+    
+    <view class="result-item">
+      <text class="label">操作时间：</text>
+      <text class="value">{{currentDate}}</text>
+    </view>
+  </view>
+  
+  <view class="button" onTap="backToLogin">
+    <text>返回首页</text>
+  </view>
+</view>
