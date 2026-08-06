@@ -168,4 +168,15 @@ router.delete('/user/:id', async (req, res) => {
   }
 });
 
+// 修改密码
+router.post('/user/:id/change-password', async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const result = await userService.changePassword(req.params.id, currentPassword, newPassword);
+    res.status(200).json({ code: 200, data: result, message: '密码修改成功' });
+  } catch (error) {
+    res.status(500).json({ code: 500, message: error.message });
+  }
+});
+
 module.exports = router;

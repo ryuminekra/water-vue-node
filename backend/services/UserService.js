@@ -157,6 +157,39 @@ class UserService {
       throw new Error('无效的token');
     }
   }
+
+  // 修改密码
+  async changePassword(id, currentPassword, newPassword) {
+    try {
+      const user = await User.findByPk(id);
+      if (!user) {
+        throw new Error('用户不存在');
+      }
+      
+      // 验证当前密码
+      const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+      if (!isPasswordValid) {
+        throw new Error('当前密码错误');
+      }
+      
+      // 加密新密码
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      
+      // 更新密码
+      await user.update({ password: hashedPassword });
+      
+      // 记录系统日志
+      await SystemLog.create({
+        operation: `用户修改密码: ${user.username}`,
+        module: '用户管理',
+        ip: '127.0.0.1' // 实际项目中应该从请求中获取IP
+      });
+      
+      return { message: '密码修改成功' };
+    } catch (error) {
+      throw new Error('修改密码失败: ' + error.message);
+    }
+  }
 }
 
 module.exports = new UserService;

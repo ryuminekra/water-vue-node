@@ -197,20 +197,19 @@ const updatePassword = async () => {
   }
   
   try {
-    // 这里应该调用后端API修改密码
-    // 为了演示，我们使用一个模拟的成功响应
-    // 实际项目中应该调用API验证当前密码并更新新密码
-    setTimeout(() => {
-      ElMessage.success('密码修改成功')
-      passwordForm.value = {
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-      }
-    }, 1000)
+    await Api.post(`/system/user/${userInfo.value.id}/change-password`, {
+      currentPassword: passwordForm.value.currentPassword,
+      newPassword: passwordForm.value.newPassword
+    })
+    ElMessage.success('密码修改成功')
+    passwordForm.value = {
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: ''
+    }
   } catch (error) {
     console.error('修改密码失败:', error)
-    ElMessage.error('修改密码失败')
+    ElMessage.error(error.response?.data?.message || '修改密码失败')
   }
 }
 
